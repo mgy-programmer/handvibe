@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:handvibe/model/category_model.dart';
 import 'package:handvibe/model_view/provider/category_provider.dart';
 import 'package:handvibe/model_view/services/language_localizations.dart';
+import 'package:handvibe/model_view/services/shared_preferences.dart';
 import 'package:handvibe/utility/color_bank.dart';
 import 'package:handvibe/utility/enum.dart';
 import 'package:handvibe/utility/screen_size_util.dart';
 import 'package:handvibe/utility/text_font.dart';
 import 'package:handvibe/view/molecule/hobi_button.dart';
 import 'package:provider/provider.dart';
+
+import '../../model_view/provider/language_provider.dart';
 
 class FilterDialog extends StatefulWidget {
   const FilterDialog({super.key});
@@ -18,11 +21,21 @@ class FilterDialog extends StatefulWidget {
 
 class _FilterDialogState extends State<FilterDialog> {
   List<CategoryModel> selectedCategories = [];
+  String langCode = "";
 
   @override
   void initState() {
     Provider.of<CategoryProvider>(context, listen: false).getAllCategory();
+    fillData();
     super.initState();
+  }
+
+
+  fillData()async{
+    langCode = await SharedPreferencesMethods().getSelectedLanguage();
+    setState(() {
+
+    });
   }
 
   @override
@@ -61,8 +74,12 @@ class _FilterDialogState extends State<FilterDialog> {
                               }
                             },
                             title: Text(
-                              categoryProvider.categories[index].categoryNameTR,
-                              style: TextFont().ralewayRegularMethod(18, ColorBank().black, context),
+                              langCode != ""
+                                  ? langCode == "tr"
+                                  ? categoryProvider.categories[index].categoryNameTR
+                                  : categoryProvider.categories[index].categoryNameEN
+                                  : categoryProvider.categories[index].categoryNameEN,
+                              style: TextFont().ralewayRegularMethod(16, ColorBank().white, context),
                             ),
                             trailing: Container(
                               width: ScreenSizeUtil().getCalculateWith(context, 24),

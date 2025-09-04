@@ -17,7 +17,7 @@ class SharedPreferencesMethods {
 
   Future<String> getSelectedLanguage() async {
     preferences = await SharedPreferences.getInstance();
-    langCode = preferences.getString('langCode') ?? "tr";
+    langCode = preferences.getString('langCode') ?? "";
     return langCode;
   }
 

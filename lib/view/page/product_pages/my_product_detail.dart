@@ -7,6 +7,7 @@ import 'package:handvibe/model_view/firebase/firebase_user.dart';
 import 'package:handvibe/model_view/provider/product_provider.dart';
 import 'package:handvibe/model_view/provider/user_provider.dart';
 import 'package:handvibe/model_view/services/language_localizations.dart';
+import 'package:handvibe/model_view/services/shared_preferences.dart';
 import 'package:handvibe/utility/color_bank.dart';
 import 'package:handvibe/utility/constant.dart';
 import 'package:handvibe/utility/enum.dart';
@@ -33,15 +34,21 @@ class MyProductDetail extends StatefulWidget {
 class _MyProductDetailState extends State<MyProductDetail> {
   bool follow = false;
   bool showAll = false;
+  String langCode = "";
   List<String> products = [];
   Progressing progressing = Progressing.idle;
 
   @override
   void initState() {
     Provider.of<ProductProvider>(context, listen: false).getProductsByCategoryList(widget.productModel.productCategoryList, 5);
+    fillData();
     super.initState();
   }
 
+  fillData() async {
+    langCode = await SharedPreferencesMethods().getSelectedLanguage();
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userProvider, widgets) {
@@ -152,7 +159,7 @@ class _MyProductDetailState extends State<MyProductDetail> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  widget.productModel.productCategoryList[index].categoryNameTR,
+                                  langCode == "tr" ? widget.productModel.productCategoryList[index].categoryNameTR : widget.productModel.productCategoryList[index].categoryNameEN,
                                   style: TextFont().ralewayRegularMethod(16, ColorBank().white, context),
                                 ),
                               ),
