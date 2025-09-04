@@ -253,3 +253,4 @@ android/app/google-services.json
 
 #other
 lib/firebase_options.dart
+firebase.json
