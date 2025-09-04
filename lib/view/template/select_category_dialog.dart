@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:handvibe/model/category_model.dart';
 import 'package:handvibe/model_view/provider/category_provider.dart';
+import 'package:handvibe/model_view/provider/language_provider.dart';
 import 'package:handvibe/model_view/services/language_localizations.dart';
+import 'package:handvibe/model_view/services/shared_preferences.dart';
 import 'package:handvibe/utility/color_bank.dart';
 import 'package:handvibe/utility/enum.dart';
 import 'package:handvibe/utility/screen_size_util.dart';
@@ -20,11 +22,19 @@ class SelectCategoryDialog extends StatefulWidget {
 
 class _SelectCategoryDialogState extends State<SelectCategoryDialog> {
   List<CategoryModel> selectedCategories = [];
+  String langCode = "";
 
   @override
   void initState() {
+    fillData();
     Provider.of<CategoryProvider>(context, listen: false).getAllCategory();
     super.initState();
+  }
+
+  fillData() async {
+    langCode = await SharedPreferencesMethods().getSelectedLanguage();
+    print(langCode);
+    setState(() {});
   }
 
   @override
@@ -72,11 +82,11 @@ class _SelectCategoryDialogState extends State<SelectCategoryDialog> {
                               }
                             },
                             title: Text(
-                              categoryProvider.categories[index].categoryNameTR,
-                              style: TextFont().ralewayRegularMethod(18, ColorBank().black, context),
+                              langCode == "en" ? categoryProvider.categories[index].categoryNameEN : categoryProvider.categories[index].categoryNameTR,
+                              style: TextFont().ralewayBoldMethod(16, ColorBank().black, context),
                             ),
                             subtitle: Text(
-                              categoryProvider.categories[index].categoryDescriptionTR,
+                              langCode == "en" ? categoryProvider.categories[index].categoryDescriptionEN : categoryProvider.categories[index].categoryDescriptionTR,
                               style: TextFont().ralewayRegularMethod(14, ColorBank().hinTextColor, context),
                             ),
                             trailing: Container(

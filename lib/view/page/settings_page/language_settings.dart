@@ -47,9 +47,9 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
               size: ScreenSizeUtil().getCalculateWith(context, 20),
             ),
             onTap: () async {
-              await SharedPreferencesMethods().saveSelectedLanguage("");
               String langCode = "";
               if(context.mounted) langCode = AppLocalizations.of(context)!.locale.languageCode;
+              await SharedPreferencesMethods().saveSelectedLanguage(langCode);
               await FireStoreUser().updateLanguage(widget.uid, langCode);
               if(context.mounted){
                 Provider.of<LanguageProvider>(context, listen: false).setLanguage("");

@@ -10,6 +10,7 @@ import 'package:handvibe/model_view/provider/language_provider.dart';
 import 'package:handvibe/model_view/provider/product_provider.dart';
 import 'package:handvibe/model_view/provider/user_provider.dart';
 import 'package:handvibe/model_view/services/language_localizations.dart';
+import 'package:handvibe/model_view/services/shared_preferences.dart';
 import 'package:handvibe/utility/color_bank.dart';
 import 'package:handvibe/utility/constant.dart';
 import 'package:handvibe/utility/enum.dart';
@@ -41,6 +42,7 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   bool follow = false;
   bool showAll = false;
+  String langCode = "";
   List<String> products = [];
   Progressing progressing = Progressing.idle;
 
@@ -48,7 +50,13 @@ class _ProductDetailState extends State<ProductDetail> {
   void initState() {
     Provider.of<UserProvider>(context, listen: false).getUserProfile(widget.productModel.sellerId);
     Provider.of<ProductProvider>(context, listen: false).getProductsByCategoryList(widget.productModel.productCategoryList, 5);
+    fillData();
     super.initState();
+  }
+
+  fillData() async {
+    langCode = await SharedPreferencesMethods().getSelectedLanguage();
+    setState(() {});
   }
 
   @override
@@ -162,16 +170,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                   color: ColorBank().primary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Consumer<LanguageProvider>(builder: (context, langProvider, widgets) {
-                                  return Text(
-                                    langProvider.langCode != ""
-                                        ? langProvider.langCode == "tr"
-                                            ? widget.productModel.productCategoryList[index].categoryNameTR
-                                            : widget.productModel.productCategoryList[index].categoryNameEN
-                                        : widget.productModel.productCategoryList[index].categoryNameEN,
-                                    style: TextFont().ralewayRegularMethod(16, ColorBank().white, context),
-                                  );
-                                }),
+                                child: Text(
+                                  langCode == "tr" ? widget.productModel.productCategoryList[index].categoryNameTR : widget.productModel.productCategoryList[index].categoryNameEN,
+                                  style: TextFont().ralewayRegularMethod(16, ColorBank().white, context),
+                                ),
                               ),
                             ),
                           ),

@@ -9,9 +9,7 @@ class CategoryProvider extends ChangeNotifier{
 
   getAllCategory()async{
     progressing = Progressing.busy;
-    if(categories.isEmpty){
-      categories = await FirebaseCategory().getCategoryList();
-    }
+    categories = await FirebaseCategory().getCategoryList();
     progressing = Progressing.idle;
     notifyListeners();
   }
