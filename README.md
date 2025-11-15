@@ -37,7 +37,7 @@ Sellers can showcase their work, follow sellers, and chat directly in the app.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/handvibe.git
+   git clone https://github.com/mgy-programmer/handvibe.git
 2. Navigate to the project folder:
    ```bash
    cd handvibe
